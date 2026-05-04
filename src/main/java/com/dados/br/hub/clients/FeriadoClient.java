@@ -6,7 +6,7 @@ import io.micronaut.http.client.annotation.Client;
 
 import java.util.List;
 
-@Client(id = "brasilapi")
+@Client("${brasilapi.url}")
 public interface FeriadoClient {
 
     @Get("/feriados/v1/{ano}")

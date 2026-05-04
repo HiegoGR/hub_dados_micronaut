@@ -4,7 +4,7 @@ import com.dados.br.hub.dto.CnpjResponseDto;
 import io.micronaut.http.annotation.Get;
 import io.micronaut.http.client.annotation.Client;
 
-@Client(id = "brasilapi")
+@Client("${brasilapi.url}")
 public interface CnpjClient {
 
     @Get("/cnpj/v1/{cnpj}")

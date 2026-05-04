@@ -4,7 +4,7 @@ import com.dados.br.hub.dto.ViaCepResponseDto;
 import io.micronaut.http.annotation.Get;
 import io.micronaut.http.client.annotation.Client;
 
-@Client(id = "viacep")
+@Client("${viacep.url}")
 public interface ViacepClient {
 
     @Get("/{cep}/json/")
