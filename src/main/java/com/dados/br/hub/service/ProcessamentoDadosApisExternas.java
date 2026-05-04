@@ -48,7 +48,7 @@ public class ProcessamentoDadosApisExternas {
 
     public void processarDados(ConsultaSolicitadaEvent consultaSolicitadaEvent){
         String jobId = consultaSolicitadaEvent.getJobId();
-        ResponseCompletoDto request = consultaSolicitadaEvent.getDados();
+        JobResponseDto request = consultaSolicitadaEvent.getDados();
 
         log.info("[Inicioando Processamento] Processando dados para o job {}", jobId);
         jobStatusService.updateStatus(jobId, JobStatus.PROCESSANDO);
@@ -89,8 +89,7 @@ public class ProcessamentoDadosApisExternas {
                     () -> {
                         try{
                             log.info("[FERIADOS] Buscando Feriados");
-                            //TODO: Ao ajustar um response para API colocar ANO
-                            return feriadoService.buscarFeriados(LocalDate.now().getYear());
+                            return feriadoService.buscarFeriados(request.getAnoFeriado());
                         }catch (Exception e){
                             log.error("[Erro FERIADOS] Erro ao buscar Feriados:{}", e.getMessage());
                             errosParciais.put("Feriados", e.getMessage());
@@ -104,7 +103,7 @@ public class ProcessamentoDadosApisExternas {
                     () -> {
                         try{
                             log.info("[CAMBIO] Buscando Cambio");
-                            return cambioService.buscarValorCambial(request.getCambio().getTipoMoeda(),LocalDate.now().toString());
+                            return cambioService.buscarValorCambial(request.getMoedaCambio(),request.getAnoCambio().toString());
                         }catch (Exception e){
                             log.error("[Erro CAMBIO] Erro ao buscar Cambio:{}", e.getMessage());
                             errosParciais.put("Cambio", e.getMessage());

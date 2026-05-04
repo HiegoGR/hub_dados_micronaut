@@ -11,5 +11,5 @@ import lombok.NoArgsConstructor;
 @Introspected
 public class ConsultaSolicitadaEvent {
    private String jobId;
-   private ResponseCompletoDto dados;
+   private JobResponseDto dados;
 }

@@ -2,6 +2,7 @@ package com.dados.br.hub.controller;
 
 import com.dados.br.hub.dto.JobInfo;
 import com.dados.br.hub.dto.JobResponse;
+import com.dados.br.hub.dto.JobResponseDto;
 import com.dados.br.hub.dto.ResponseCompletoDto;
 import com.dados.br.hub.service.JobService;
 import io.micronaut.http.HttpResponse;
@@ -18,7 +19,7 @@ public class JobController {
     }
 
     @Post("/enriquecimento")
-    public HttpResponse<JobResponse> criarJob(@Body @Valid ResponseCompletoDto request) {
+    public HttpResponse<JobResponse> criarJob(@Body @Valid JobResponseDto request) {
         JobResponse response = jobService.criarJob(request);
         return HttpResponse.accepted().body(response);
     }
