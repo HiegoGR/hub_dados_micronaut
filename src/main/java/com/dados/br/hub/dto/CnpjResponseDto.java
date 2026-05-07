@@ -64,6 +64,7 @@ public class CnpjResponseDto {
     private String descricaoIdentificadorMatrizFilial;
 
     @Data
+    @Serdeable
     @NoArgsConstructor
     @Introspected
     public static class Qsa {
@@ -84,6 +85,7 @@ public class CnpjResponseDto {
     }
 
     @Data
+    @Serdeable
     @NoArgsConstructor
     @Introspected
     public static class CnaesSecundarios {
@@ -92,6 +94,7 @@ public class CnpjResponseDto {
     }
 
     @Data
+    @Serdeable
     @NoArgsConstructor
     @Introspected
     public static class RegimeTributario {

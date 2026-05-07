@@ -16,19 +16,19 @@ public class JobResultadoMapper {
     private final ObjectMapper objectMapper;
     private final ViaCepMapper viaCepMapper;
     private final CnpjMapper cnpjMapper;
-    private final CambioMapper cambioMapper;
+    private final CotacaoMapper cotacaoMapper;
     private final FeriadoMapper feriadoMapper;
 
     public JobResultadoMapper(
             ObjectMapper objectMapper,
             ViaCepMapper viaCepMapper,
             CnpjMapper cnpjMapper,
-            CambioMapper cambioMapper,
+            CotacaoMapper cotacaoMapper,
             FeriadoMapper feriadoMapper) {
         this.objectMapper = objectMapper;
         this.viaCepMapper = viaCepMapper;
         this.cnpjMapper = cnpjMapper;
-        this.cambioMapper = cambioMapper;
+        this.cotacaoMapper = cotacaoMapper;
         this.feriadoMapper = feriadoMapper;
     }
 
@@ -40,7 +40,7 @@ public class JobResultadoMapper {
 
         entity.setViaCep(dto.getCep() == null ? null : viaCepMapper.toEntity((ViaCepResponseDto) dto.getCep()));
         entity.setCnpj(dto.getCnpj() == null ? null : cnpjMapper.toEntity((CnpjResponseDto) dto.getCnpj()));
-        entity.setCambio(dto.getCambio() == null ? null : cambioMapper.toEntity((CambioResponseDto) dto.getCambio()));
+        entity.setCotacao(dto.getCotacao() == null ? null : cotacaoMapper.toEntityList2((ContacaoResponseDto) dto.getCotacao()));
         entity.setFeriados(dto.getFeriados() == null ? Collections.emptyList() : feriadoMapper.toEntityList((List<?>) dto.getFeriados()));
         entity.setErrosParciais(converterErros(dto.getErrosParciais()));
 

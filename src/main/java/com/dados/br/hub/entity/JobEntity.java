@@ -7,7 +7,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.List;
-import java.util.Map;
 
 @Data
 @NoArgsConstructor
@@ -34,9 +33,9 @@ public class JobEntity {
     @JoinColumn(name = "job_id")
     private List<FeriadoEntity> feriados;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "cambio_id")
-    private CambioEntity cambio;
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "job_id")
+    private List<CotacaoEntity> cotacao;
 
     @Column(columnDefinition = "TEXT")
     private String errosParciais;

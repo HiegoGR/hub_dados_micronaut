@@ -12,6 +12,6 @@ public class ExecutorConfig {
     @Singleton
     @Named("enriquecimento-executor")
     public ExecutorService enriquecimentoExecutor() {
-        return Executors.newFixedThreadPool(5);
+        return Executors.newFixedThreadPool(2);
     }
 }

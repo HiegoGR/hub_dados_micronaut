@@ -7,18 +7,15 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.List;
-import java.util.Map;
 
 @Data
 @Serdeable
 @NoArgsConstructor
 @AllArgsConstructor
 @Introspected
-public class ResultadoDadosApiDto {
+public class ContacaoResponseDto {
 
-    private Object cep;
-    private Object cnpj;
-    private List<?> feriados;
-    private Object cotacao;
-    private Map<String, String> errosParciais;
+    private List<CotacaoDto> cotacoes;
+    private String moeda;
+    private String data;
 }

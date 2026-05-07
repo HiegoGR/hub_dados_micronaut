@@ -14,11 +14,10 @@ import jakarta.inject.Named;
 import jakarta.inject.Singleton;
 import lombok.extern.slf4j.Slf4j;
 
-import java.time.LocalDate;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutorService;
 
 
@@ -61,7 +60,7 @@ public class ProcessamentoDadosApisExternas {
         log.info("[Inicioando Processamento] Processando dados para o job {}", jobId);
         jobStatusService.updateStatus(jobId, JobStatus.PROCESSANDO);
 
-        Map<String,String> errosParciais = new HashMap<>();
+        Map<String,String> errosParciais = new ConcurrentHashMap<>();
 
         try {
             log.info("[CEP] Processando cep");
@@ -106,41 +105,36 @@ public class ProcessamentoDadosApisExternas {
                     }, executorService
             );
 
-            log.info("[CAMBIO] Processando Cambio");
-            CompletableFuture<Object> cambio = CompletableFuture.supplyAsync(
+            log.info("[COTACAO] Processando Cotacao");
+            CompletableFuture<Object> cotacao = CompletableFuture.supplyAsync(
                     () -> {
                         try{
-                            log.info("[CAMBIO] Buscando Cambio");
-                            return cambioService.buscarValorCambial(request.getMoedaCambio(),request.getAnoCambio().toString());
+                            log.info("[COTACAO] Buscando Cotacao");
+                            return cambioService.cotacao(request.getMoedaCambio(),request.getAnoCambio().toString());
                         }catch (Exception e){
-                            log.error("[Erro CAMBIO] Erro ao buscar Cambio:{}", e.getMessage());
-                            errosParciais.put("Cambio", e.getMessage());
+                            log.error("[Erro COTACAO] Erro ao buscar Cotacao:{}", e.getMessage());
+                            errosParciais.put("Cotacao", e.getMessage());
                             return null;
                         }
                     }, executorService
             );
 
             CompletableFuture.allOf(
-                    cep, cnpj, feriados, cambio
+                    cep, cnpj, feriados, cotacao
             ).join();
 
             ResultadoDadosApiDto resultado = new ResultadoDadosApiDto();
             resultado.setCep(cep.join());
             resultado.setCnpj(cnpj.join());
             resultado.setFeriados((List<?>) feriados.join());
-            resultado.setCambio(cambio.join());
+            resultado.setCotacao(cotacao.join());
             resultado.setErrosParciais(errosParciais);
 
             jobStatusService.updateResultado(jobId, resultado);
 
             JobEntity jobEntity = jobResultadoMapper.toEntity(jobId, resultado);
             jobRepository.save(jobEntity);
-            /*
-            TODO:
-              ResponseCompletoDto -> Criar um DTO para ter um resultado com poucas informaçoes sem precisar retornar tudo
-             fazer um convert de ResultadoDadosApiDto para ResponseCompletoDto mostrar apenas alguns dados
-            */
-            //jobProducer.enviarJobProcessado(new ConsultaProcessadaEvent(jobId, resultado)); -> resultado seria do ResponseCompletoDto
+
             log.info("[Finalizando Processamento] Processamento finalizado com sucesso, enviando para fila de processamento:");
             jobProducer.enviarJobProcessado(new ConsultaProcessadaEvent(jobId, resultado));
         }catch (Exception e){
