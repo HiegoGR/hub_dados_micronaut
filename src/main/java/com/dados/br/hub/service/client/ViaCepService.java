@@ -14,6 +14,18 @@ public class ViaCepService {
     }
 
     public ViaCepResponseDto buscar(String cep) {
+        cep = cep.replaceAll("[^0-9]", "");
+        validarCep(cep);
         return viaCepClient.buscarCep(cep);
+    }
+
+    public void validarCep(String cep) {
+        if (cep == null || cep.isEmpty()) {
+            throw new RuntimeException("Campo Cep esta vazio");
+        }
+
+        if (cep.length() != 8 || !cep.matches("\\d+")) {
+            throw new RuntimeException("Cep invalido. Deve conter 8 digitos numeros. Ex: 01001000");
+        }
     }
 }
