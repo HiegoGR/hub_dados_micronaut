@@ -1,8 +1,11 @@
 package com.dados.br.hub.service;
 
+import com.dados.br.hub.entity.JobEntity;
+import com.dados.br.hub.mapper.JobResultadoMapper;
 import com.dados.br.hub.produce.JobProducer;
 import com.dados.br.hub.dto.*;
 import com.dados.br.hub.enums.JobStatus;
+import com.dados.br.hub.repository.JobRepository;
 import com.dados.br.hub.service.client.CambioService;
 import com.dados.br.hub.service.client.CnpjService;
 import com.dados.br.hub.service.client.FeriadoService;
@@ -31,12 +34,15 @@ public class ProcessamentoDadosApisExternas {
     private final ViaCepService viaCepService;
     private final FeriadoService feriadoService;
     private final CambioService cambioService;
+    private final JobRepository jobRepository;
+    private final JobResultadoMapper jobResultadoMapper;
 
 
     public ProcessamentoDadosApisExternas(JobStatusService jobStatusService, JobProducer jobProducer,
                                           @Named("enriquecimento-executor") ExecutorService executorService,
                                           CnpjService cnpjService, ViaCepService viaCepService,
-                                          FeriadoService feriadoService, CambioService cambioService) {
+                                          FeriadoService feriadoService, CambioService cambioService,
+                                          JobRepository jobRepository, JobResultadoMapper jobResultadoMapper) {
         this.jobStatusService = jobStatusService;
         this.jobProducer = jobProducer;
         this.executorService = executorService;
@@ -44,6 +50,8 @@ public class ProcessamentoDadosApisExternas {
         this.viaCepService = viaCepService;
         this.feriadoService = feriadoService;
         this.cambioService = cambioService;
+        this.jobRepository = jobRepository;
+        this.jobResultadoMapper = jobResultadoMapper;
     }
 
     public void processarDados(ConsultaSolicitadaEvent consultaSolicitadaEvent){
@@ -124,12 +132,16 @@ public class ProcessamentoDadosApisExternas {
             resultado.setErrosParciais(errosParciais);
 
             jobStatusService.updateResultado(jobId, resultado);
+
+            JobEntity jobEntity = jobResultadoMapper.toEntity(jobId, resultado);
+            jobRepository.save(jobEntity);
             /*
             TODO:
               ResponseCompletoDto -> Criar um DTO para ter um resultado com poucas informaçoes sem precisar retornar tudo
              fazer um convert de ResultadoDadosApiDto para ResponseCompletoDto mostrar apenas alguns dados
             */
             //jobProducer.enviarJobProcessado(new ConsultaProcessadaEvent(jobId, resultado)); -> resultado seria do ResponseCompletoDto
+            log.info("[Finalizando Processamento] Processamento finalizado com sucesso, enviando para fila de processamento:");
             jobProducer.enviarJobProcessado(new ConsultaProcessadaEvent(jobId, resultado));
         }catch (Exception e){
             log.error("[Erro] Erro ao consumir apis :{}, enviando para fila de erro", e.getMessage());

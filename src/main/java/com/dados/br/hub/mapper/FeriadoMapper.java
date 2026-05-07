@@ -1,46 +1,40 @@
 package com.dados.br.hub.mapper;
 
+import com.dados.br.hub.dto.FeriadoResponseDto;
 import com.dados.br.hub.dto.ViaCepResponseDto;
+import com.dados.br.hub.entity.FeriadoEntity;
 import com.dados.br.hub.entity.ViaCepEntity;
+import jakarta.inject.Singleton;
 
-public class ViaCepMapper {
+import java.util.List;
 
-    public ViaCepEntity toEntity(ViaCepResponseDto dto){
-        ViaCepEntity entity = new ViaCepEntity();
+@Singleton
+public class FeriadoMapper {
 
-        entity.setCep(dto.getCep());
-        entity.setLogradouro(dto.getLogradouro());
-        entity.setComplemento(dto.getComplemento());
-        entity.setUnidade(dto.getUnidade());
-        entity.setBairro(dto.getBairro());
-        entity.setLocalidade(dto.getLocalidade());
-        entity.setUf(dto.getUf());
-        entity.setEstado(dto.getEstado());
-        entity.setRegiao(dto.getRegiao());
-        entity.setIbge(dto.getIbge());
-        entity.setGia(dto.getGia());
-        entity.setDdd(dto.getDdd());
-        entity.setSiafi(dto.getSiafi());
+    public FeriadoEntity toEntity(FeriadoResponseDto dto){
+        FeriadoEntity entity = new FeriadoEntity();
+
+        entity.setDate(dto.getDate());
+        entity.setName(dto.getName());
+        entity.setType(dto.getType());
+        entity.setWeekday(dto.getWeekday());
 
         return entity;
     }
 
-    public ViaCepResponseDto toDto(ViaCepEntity entity){
-        ViaCepResponseDto dto = new ViaCepResponseDto();
+    public List<FeriadoEntity> toEntityList(List<?> dtos) {
+        return dtos.stream()
+                .map(item -> toEntity((FeriadoResponseDto) item))
+                .toList();
+    }
 
-        dto.setCep(entity.getCep());
-        dto.setLogradouro(entity.getLogradouro());
-        dto.setComplemento(entity.getComplemento());
-        dto.setUnidade(entity.getUnidade());
-        dto.setBairro(entity.getBairro());
-        dto.setLocalidade(entity.getLocalidade());
-        dto.setUf(entity.getUf());
-        dto.setEstado(entity.getEstado());
-        dto.setRegiao(entity.getRegiao());
-        dto.setIbge(entity.getIbge());
-        dto.setGia(entity.getGia());
-        dto.setDdd(entity.getDdd());
-        dto.setSiafi(entity.getSiafi());
+    public FeriadoResponseDto toDto(FeriadoEntity entity){
+        FeriadoResponseDto dto = new FeriadoResponseDto();
+
+        dto.setDate(entity.getDate());
+        dto.setName(entity.getName());
+        dto.setType(entity.getType());
+        dto.setWeekday(entity.getWeekday());
 
         return dto;
     }
