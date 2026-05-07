@@ -2,8 +2,11 @@ package com.dados.br.hub.service.client;
 
 import com.dados.br.hub.clients.CnpjClient;
 import com.dados.br.hub.dto.CnpjResponseDto;
+import io.micronaut.scheduling.TaskExecutors;
+import io.micronaut.scheduling.annotation.ExecuteOn;
 import jakarta.inject.Singleton;
 
+@ExecuteOn(TaskExecutors.BLOCKING)
 @Singleton
 public class CnpjService {
 
