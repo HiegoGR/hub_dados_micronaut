@@ -22,7 +22,7 @@ public class CnpjService {
         return cnpjClient.buscarCnpj(cnpj);
     }
 
-    public void validarCnpj(String cnpj) {
+    private void validarCnpj(String cnpj) {
         if(cnpj.isEmpty()){
             throw new RuntimeException("Campo Cnpj esta vazio");
         }

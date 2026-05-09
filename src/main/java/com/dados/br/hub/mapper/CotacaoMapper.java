@@ -1,9 +1,7 @@
 package com.dados.br.hub.mapper;
 
-import com.dados.br.hub.dto.CambioResponseDto;
 import com.dados.br.hub.dto.ContacaoResponseDto;
 import com.dados.br.hub.dto.CotacaoDto;
-import com.dados.br.hub.entity.CambioEntity;
 import com.dados.br.hub.entity.CotacaoEntity;
 import jakarta.inject.Singleton;
 

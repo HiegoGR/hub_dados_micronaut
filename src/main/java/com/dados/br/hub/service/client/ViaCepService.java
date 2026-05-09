@@ -19,7 +19,7 @@ public class ViaCepService {
         return viaCepClient.buscarCep(cep);
     }
 
-    public void validarCep(String cep) {
+    private void validarCep(String cep) {
         if (cep == null || cep.isEmpty()) {
             throw new RuntimeException("Campo Cep esta vazio");
         }

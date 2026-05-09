@@ -3,7 +3,6 @@ package com.dados.br.hub.controller;
 import com.dados.br.hub.dto.JobInfo;
 import com.dados.br.hub.dto.JobResponse;
 import com.dados.br.hub.dto.JobResponseDto;
-import com.dados.br.hub.dto.ResponseCompletoDto;
 import com.dados.br.hub.service.JobService;
 import io.micronaut.http.HttpResponse;
 import io.micronaut.http.annotation.*;

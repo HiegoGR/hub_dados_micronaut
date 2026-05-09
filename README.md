@@ -15,7 +15,7 @@ processar de forma assíncrona via Kafka e enriquecer as informações
 consumindo múltiplas APIs externas em paralelo
 
 ### Arquitetura
-``` Controller → Service → Kafka Producer → Kafka Consumer → Processamento paralelo → Resultado```
+``` Controller → Service → Kafka Producer → Kafka Consumer → Processamento paralelo → Persistência → Resultado```
 - Fluxo
     - Cliente envia requisição HTTP
     - Sistema cria um jobId
@@ -28,11 +28,25 @@ consumindo múltiplas APIs externas em paralelo
 ### Tecnologias
 - Java 21
 - Micronaut
-- Kafka
-- Docker (Kafka)
+- Apache Kafka
+- Docker
+- H2 Database
+- JPA / Hibernate
+- JUnit 5
+- Mockito
 - APIs externas:
   - ViaCEP
-  - BrasilAPI(CNPJ, CAMBIO, FERIADOS)
+  - BrasilAPI
+    - CNPJ
+    - Câmbio
+    - Feriados
+
+### Persistência de dados
+O sistema salva o resultado do processamento do job em banco de dados utilizando:
+
+- H2 Database
+- JPA/Hibernate
+- Entidades relacionais
 
 
 ### Processamento paralelo
@@ -49,6 +63,8 @@ Exemplo de tarefas paralelas:
 - Consulta Feriados
 - Consulta Câmbio
 
+### Testes Unitários
+O projeto possui testes unitários para todas as classes da camada service.
 
 ### Como executar o projeto
 

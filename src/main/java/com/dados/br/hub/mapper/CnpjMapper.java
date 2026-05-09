@@ -1,9 +1,7 @@
 package com.dados.br.hub.mapper;
 
 import com.dados.br.hub.dto.CnpjResponseDto;
-import com.dados.br.hub.dto.ViaCepResponseDto;
 import com.dados.br.hub.entity.CnpjEntity;
-import com.dados.br.hub.entity.ViaCepEntity;
 import jakarta.inject.Singleton;
 
 @Singleton

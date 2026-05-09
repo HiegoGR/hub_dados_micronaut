@@ -1,9 +1,7 @@
 package com.dados.br.hub.mapper;
 
 import com.dados.br.hub.dto.FeriadoResponseDto;
-import com.dados.br.hub.dto.ViaCepResponseDto;
 import com.dados.br.hub.entity.FeriadoEntity;
-import com.dados.br.hub.entity.ViaCepEntity;
 import jakarta.inject.Singleton;
 
 import java.util.List;
